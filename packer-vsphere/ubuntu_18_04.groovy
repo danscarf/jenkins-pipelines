@@ -8,7 +8,8 @@ try{
           doGenerateSubmoduleConfigurations: false,
           extensions: [
           ],
-          submoduleCfg: [],
+          submoduleCfg: [
+          ],
           userRemoteConfigs: [
             [
               url: 'https://github.com/rainpole/packer-vsphere.git'
@@ -17,8 +18,12 @@ try{
         ]
       )
     }
+    stage('Configure source for build'){
+      withCredentials([usernamePassword(credentialsId: 'vcenter_packer_creds', passwordVariable: 'VC_PASSWORD', usernameVariable: 'VC_USERNAME')]) {
+        sh 'echo $VC_USERNAME > out.txt'
+      }
+    }
   }
-
 }
 catch (e) {
   echo "Exception thrown: $e"
